@@ -1,0 +1,6 @@
+{
+  "name": "Happy 19th Birthday Jawan Urnaw",
+  "description": "An interactive 19th birthday celebration with grand opening curtains, age countdown, mini-game balloon challenge, wipe reveal, fireworks, 3D magical memory scrapbook, and media album admin panel.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

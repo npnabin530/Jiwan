@@ -12,7 +12,7 @@ import { TicTacToeGame } from './components/TicTacToeGame';
 import { SoundControl } from './components/SoundControl';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminLoginPage } from './components/admin/AdminLoginPage';
-import { Film } from 'lucide-react';
+import { Film, Shield, Settings } from 'lucide-react';
 import { soundManager } from './utils/audio';
 
 const AUTH_STORAGE_KEY = 'birthday_admin_jwt';
@@ -171,6 +171,18 @@ export default function App() {
     loadPublicData();
   };
 
+  const goToAdmin = () => {
+    const token = localStorage.getItem(AUTH_STORAGE_KEY);
+    if (token) {
+      setAdminToken(token);
+      window.history.pushState(null, '', '/admin');
+      setRoute('admin');
+    } else {
+      window.history.pushState(null, '', '/admin/login');
+      setRoute('admin-login');
+    }
+  };
+
   const handleDataSaved = (savedData: FullWebsiteData) => {
     setFullData(savedData);
     if (savedData.memories) setMemories(savedData.memories);
@@ -258,8 +270,8 @@ export default function App() {
       {/* Floating Audio & Music Sound Controls */}
       <SoundControl />
 
-      {/* Quick Scene Selector Toggle (Discrete helper for celebration scenes) */}
-      <div className="fixed top-4 left-4 z-40">
+      {/* Top Left Navigation Controls (Scene Jump + Admin Panel Link) */}
+      <div className="fixed top-4 left-4 z-40 flex items-center gap-2">
         <button
           id="btn-toggle-scene-nav"
           onClick={() => setShowSceneNav(!showSceneNav)}
@@ -267,6 +279,17 @@ export default function App() {
           className="p-2 rounded-full bg-neutral-900/80 backdrop-blur-md border border-neutral-700/80 text-neutral-400 hover:text-amber-400 text-xs cursor-pointer shadow-lg shadow-black/40 transition-colors"
         >
           <Film className="w-3.5 h-3.5" />
+        </button>
+
+        {/* Dedicated Admin Link Button on User Panel */}
+        <button
+          id="btn-goto-admin-floating"
+          onClick={goToAdmin}
+          title="Open Admin Studio CMS Panel"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900/85 hover:bg-neutral-800 backdrop-blur-md border border-rose-500/40 text-rose-300 hover:text-rose-200 text-xs font-semibold cursor-pointer shadow-lg shadow-black/40 transition-all hover:scale-105"
+        >
+          <Shield className="w-3.5 h-3.5 text-rose-400" />
+          <span className="text-[11px] font-bold">Admin CMS</span>
         </button>
       </div>
 
@@ -277,7 +300,7 @@ export default function App() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="fixed top-14 left-4 z-50 bg-neutral-900/95 backdrop-blur-md border border-neutral-700 rounded-2xl p-2 shadow-2xl flex flex-col gap-1 text-xs"
+            className="fixed top-14 left-4 z-50 bg-neutral-900/95 backdrop-blur-md border border-neutral-700 rounded-2xl p-2 shadow-2xl flex flex-col gap-1 text-xs min-w-[210px]"
           >
             <div className="px-2 py-1 text-[10px] uppercase font-bold text-neutral-400 tracking-wider">
               Jump to Scene:
@@ -308,6 +331,24 @@ export default function App() {
                 {sc.label}
               </button>
             ))}
+
+            <div className="my-1 border-t border-neutral-800" />
+            <button
+              id="btn-jump-to-admin-menu"
+              onClick={() => {
+                setShowSceneNav(false);
+                goToAdmin();
+              }}
+              className="text-left px-3 py-1.5 rounded-xl transition-colors cursor-pointer bg-rose-950/40 hover:bg-rose-900/50 border border-rose-500/30 text-rose-300 hover:text-rose-200 font-bold flex items-center justify-between text-xs"
+            >
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5 text-rose-400" />
+                <span>Admin CMS Panel</span>
+              </div>
+              <span className="text-[9px] uppercase px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-bold border border-rose-500/30">
+                CMS
+              </span>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -422,6 +463,7 @@ export default function App() {
                   onAddWish={handleAddWish}
                   settings={settings}
                   tictactoeSettings={fullData?.tictactoe || fullData?.tictactoe_settings}
+                  onOpenAdmin={goToAdmin}
                 />
               </motion.div>
             )}

@@ -238,13 +238,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         {/* Right Action Buttons */}
         <div className="flex items-center gap-2">
-          {/* View Public Website */}
+          {/* View Public Website / User Panel */}
           <button
+            id="btn-admin-view-user-panel"
             onClick={onViewPublic}
-            className="px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white text-xs font-semibold border border-neutral-800 flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-neutral-900 to-neutral-800 hover:from-neutral-800 hover:to-neutral-700 text-amber-300 hover:text-amber-200 text-xs font-bold border border-amber-500/30 flex items-center gap-1.5 cursor-pointer transition-all shadow-sm"
+            title="Open User Birthday Website"
           >
             <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Preview Website</span>
+            <span>🎂 View User Website</span>
           </button>
 
           {/* Save All Changes */}
@@ -307,9 +309,19 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             })}
           </nav>
 
-          <div className="pt-4 border-t border-neutral-800 text-[11px] text-neutral-500 space-y-1">
-            <p>Database: Synced (JSON)</p>
-            <p className="text-[10px]">Tip: Press Ctrl+S to save anytime</p>
+          <div className="pt-4 border-t border-neutral-800 space-y-2">
+            <button
+              id="btn-sidebar-view-user-site"
+              onClick={onViewPublic}
+              className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r from-rose-500/15 via-pink-500/15 to-amber-500/15 hover:from-rose-500/25 hover:to-amber-500/25 text-rose-300 hover:text-white text-xs font-bold border border-rose-500/40 shadow-xs cursor-pointer transition-all"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+              <span>🎂 Go to User Website</span>
+            </button>
+            <div className="text-[11px] text-neutral-500 space-y-1">
+              <p>Database: Synced (JSON)</p>
+              <p className="text-[10px]">Tip: Press Ctrl+S to save anytime</p>
+            </div>
           </div>
         </aside>
 
@@ -347,13 +359,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 })}
               </nav>
 
-              <button
-                onClick={onLogout}
-                className="w-full py-2 rounded-xl bg-neutral-900 text-rose-400 text-xs font-semibold flex items-center justify-center gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Log Out</span>
-              </button>
+              <div className="space-y-2 pt-3 border-t border-neutral-800">
+                <button
+                  id="btn-mobile-view-user-site"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onViewPublic();
+                  }}
+                  className="w-full py-2.5 rounded-xl bg-rose-950/40 text-rose-300 hover:text-white text-xs font-bold flex items-center justify-center gap-2 border border-rose-500/30 cursor-pointer"
+                >
+                  <ExternalLink className="w-4 h-4 text-amber-400" />
+                  <span>🎂 Go to User Website</span>
+                </button>
+                <button
+                  onClick={onLogout}
+                  className="w-full py-2 rounded-xl bg-neutral-900 text-rose-400 text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Log Out</span>
+                </button>
+              </div>
             </div>
             <div className="flex-1" onClick={() => setMobileMenuOpen(false)} />
           </div>

@@ -253,6 +253,19 @@ export const MemoryBookScene: React.FC<MemoryBookSceneProps> = ({
         </div>
 
         <div className="flex items-center gap-1.5">
+          {/* Admin CMS Studio Button */}
+          {onOpenAdmin && (
+            <button
+              id="btn-header-admin-cms"
+              onClick={onOpenAdmin}
+              title="Open Admin CMS Studio"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 hover:text-rose-800 text-xs font-bold cursor-pointer shadow-xs transition-colors"
+            >
+              <Settings className="w-3 h-3 text-rose-500" />
+              <span>Admin CMS</span>
+            </button>
+          )}
+
           {/* Restart */}
           <button
             id="btn-restart-celebration"
@@ -764,6 +777,17 @@ export const MemoryBookScene: React.FC<MemoryBookSceneProps> = ({
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Replay Celebration Journey 🔄</span>
               </button>
+
+              {onOpenAdmin && (
+                <button
+                  id="btn-goto-admin-from-letter"
+                  onClick={onOpenAdmin}
+                  className="w-full py-2.5 rounded-2xl bg-white/90 border border-rose-200 hover:bg-rose-50 text-rose-700 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+                >
+                  <Settings className="w-3.5 h-3.5 text-rose-500" />
+                  <span>Open Admin Control Panel 🛠️</span>
+                </button>
+              )}
             </div>
 
             {/* Wishes Wall */}

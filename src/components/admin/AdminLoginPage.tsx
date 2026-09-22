@@ -171,14 +171,15 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, 
             </p>
           </div>
 
-          {/* Back to public link */}
-          <div className="mt-4 text-center">
+          {/* Back to public user website link */}
+          <div className="mt-4 pt-3 border-t border-neutral-800 text-center">
             <button
+              id="btn-login-return-to-user-website"
               type="button"
               onClick={onGoToPublic}
-              className="text-xs text-neutral-400 hover:text-white transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-neutral-800/80 hover:bg-neutral-800 text-xs font-semibold text-neutral-300 hover:text-white border border-neutral-700/60 transition-colors cursor-pointer"
             >
-              ← Return to Birthday Celebration
+              <span>🎂 Return to Birthday Website (User Panel)</span>
             </button>
           </div>
         </div>

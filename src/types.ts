@@ -4,7 +4,8 @@ export type SceneType =
   | 'balloon-game'
   | 'paint-wipe'
   | 'fireworks-surprise'
-  | 'memory-book';
+  | 'memory-book'
+  | 'tictactoe';
 
 export interface Album {
   id: string;
@@ -130,6 +131,23 @@ export interface MusicSettings {
   useSynthesizer: boolean;
 }
 
+export interface TicTacToeSettings {
+  enabled: boolean;
+  gameTitle: string;
+  gameSubtitle: string;
+  playerName: string;
+  robotName: string;
+  playerEmoji: string;
+  robotEmoji: string;
+  defaultDifficulty: 'easy' | 'medium' | 'hard';
+  backgroundStyle: 'cream-pink' | 'romantic-rose' | 'dreamy-lavender' | 'midnight-gold';
+  confettiEnabled: boolean;
+  soundEnabled: boolean;
+  winMessage: string;
+  loseMessage: string;
+  drawMessage: string;
+}
+
 export interface FullWebsiteData {
   site_settings: SiteSettings;
   countdown_settings: CountdownSettings;
@@ -137,6 +155,7 @@ export interface FullWebsiteData {
   animation_settings: AnimationSettings;
   theme_settings: ThemeSettings;
   music_settings: MusicSettings;
+  tictactoe_settings?: TicTacToeSettings;
   // Aliases for convenience in dashboard components
   settings: SiteSettings;
   countdown: CountdownSettings;
@@ -144,6 +163,7 @@ export interface FullWebsiteData {
   animations: AnimationSettings;
   theme: ThemeSettings;
   music: MusicSettings;
+  tictactoe?: TicTacToeSettings;
   memories: MemoryItem[];
   photos: PhotoItem[];
   wishes: BirthdayWish[];

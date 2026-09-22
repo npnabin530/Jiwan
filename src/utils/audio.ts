@@ -186,6 +186,116 @@ class SoundEngine {
     }
   }
 
+  // Tic-Tac-Toe Player Cell Tap
+  public playPlayerTap() {
+    if (this.isMuted) return;
+    try {
+      const ctx = this.initCtx();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, now); // C5
+      osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.07); // G5
+
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.1);
+    } catch {
+      // Fallback
+    }
+  }
+
+  // Tic-Tac-Toe Robot Move Beep
+  public playRobotBeep() {
+    if (this.isMuted) return;
+    try {
+      const ctx = this.initCtx();
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(329.63, now); // E4
+      osc.frequency.setValueAtTime(440.0, now + 0.05); // A4
+
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch {
+      // Fallback
+    }
+  }
+
+  // Tic-Tac-Toe Game Victory Chime
+  public playGameWin() {
+    if (this.isMuted) return;
+    try {
+      const ctx = this.initCtx();
+      const now = ctx.currentTime;
+      const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const start = now + idx * 0.08;
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, start);
+
+        gain.gain.setValueAtTime(0.16, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.28);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(start);
+        osc.stop(start + 0.3);
+      });
+    } catch {
+      // Fallback
+    }
+  }
+
+  // Tic-Tac-Toe Draw Chime
+  public playGameDraw() {
+    if (this.isMuted) return;
+    try {
+      const ctx = this.initCtx();
+      const now = ctx.currentTime;
+      const notes = [440.0, 440.0];
+      notes.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const start = now + idx * 0.12;
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, start);
+
+        gain.gain.setValueAtTime(0.12, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.15);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(start);
+        osc.stop(start + 0.16);
+      });
+    } catch {
+      // Fallback
+    }
+  }
+
   // Celebration Chime / Cheer
   public playCelebrationCheer() {
     this.playMagicChime();

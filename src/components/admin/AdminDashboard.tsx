@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   Shield,
+  Gamepad2,
 } from 'lucide-react';
 import { WebsiteSettingsSection } from './sections/WebsiteSettingsSection';
 import { PhotosSection } from './sections/PhotosSection';
@@ -29,6 +30,7 @@ import { CountdownSection } from './sections/CountdownSection';
 import { CurtainIntroSection } from './sections/CurtainIntroSection';
 import { BirthdayMessageSection } from './sections/BirthdayMessageSection';
 import { AnimationsSection } from './sections/AnimationsSection';
+import { TicTacToeSection } from './sections/TicTacToeSection';
 import { GeneralSettingsSection } from './sections/GeneralSettingsSection';
 
 interface AdminDashboardProps {
@@ -49,6 +51,7 @@ type TabType =
   | 'curtain'
   | 'message'
   | 'animations'
+  | 'tictactoe'
   | 'general';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({
@@ -193,6 +196,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     { id: 'curtain', label: 'Curtain & Scenes', icon: Film },
     { id: 'message', label: 'Letter & Message', icon: Mail },
     { id: 'animations', label: 'Animation Effects', icon: Sparkles },
+    { id: 'tictactoe', label: 'Tic-Tac-Toe Game 🎮', icon: Gamepad2 },
     { id: 'general', label: 'Database & Backup', icon: Settings },
   ] as const;
 
@@ -442,6 +446,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
               animations={data.animations}
               onChange={(updated) => {
                 setData({ ...data, animations: updated });
+                setHasUnsavedChanges(true);
+              }}
+            />
+          )}
+
+          {activeTab === 'tictactoe' && (
+            <TicTacToeSection
+              tictactoe={data.tictactoe || data.tictactoe_settings}
+              onChange={(updated) => {
+                setData({ ...data, tictactoe: updated, tictactoe_settings: updated });
                 setHasUnsavedChanges(true);
               }}
             />

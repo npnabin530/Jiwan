@@ -101,6 +101,22 @@ function getInitialDbState() {
       autoplay: true,
       useSynthesizer: true,
     },
+    tictactoe_settings: {
+      enabled: true,
+      gameTitle: '🎂 TIC-TAC-TOE',
+      gameSubtitle: 'You vs Robot 🤖',
+      playerName: 'You',
+      robotName: 'Robot',
+      playerEmoji: '💗',
+      robotEmoji: '🤖',
+      defaultDifficulty: 'medium',
+      backgroundStyle: 'cream-pink',
+      confettiEnabled: true,
+      soundEnabled: true,
+      winMessage: 'You defeated the birthday robot! 🎂✨',
+      loseMessage: 'The robot got this one! Try again? 😄',
+      drawMessage: 'Perfectly matched! 💕',
+    },
     photos: [
       {
         id: 'p-1',
@@ -276,7 +292,11 @@ function readDb(): any {
       return initial;
     }
     const data = fs.readFileSync(DB_FILE, 'utf-8');
-    return JSON.parse(data);
+    const parsed = JSON.parse(data);
+    if (!parsed.tictactoe_settings) {
+      parsed.tictactoe_settings = getInitialDbState().tictactoe_settings;
+    }
+    return parsed;
   } catch (err) {
     console.error('Error reading DB, resetting to defaults:', err);
     const initial = getInitialDbState();
@@ -344,6 +364,7 @@ async function startServer() {
         animations: publicData.animation_settings,
         theme: publicData.theme_settings,
         music: publicData.music_settings,
+        tictactoe: publicData.tictactoe_settings,
       },
     });
   });
@@ -442,6 +463,7 @@ async function startServer() {
         animations: data.animation_settings,
         theme: data.theme_settings,
         music: data.music_settings,
+        tictactoe: data.tictactoe_settings,
       },
       adminEmail: (req as any).adminUser,
     });
@@ -462,6 +484,8 @@ async function startServer() {
       theme,
       music_settings,
       music,
+      tictactoe_settings,
+      tictactoe,
       memories,
       photos,
       wishes,
@@ -475,6 +499,7 @@ async function startServer() {
     if (animation_settings || animations) db.animation_settings = animation_settings || animations;
     if (theme_settings || theme) db.theme_settings = theme_settings || theme;
     if (music_settings || music) db.music_settings = music_settings || music;
+    if (tictactoe_settings || tictactoe) db.tictactoe_settings = tictactoe_settings || tictactoe;
     if (Array.isArray(memories)) db.memories = memories;
     if (Array.isArray(photos)) db.photos = photos;
     if (Array.isArray(wishes)) db.wishes = wishes;
@@ -580,6 +605,7 @@ async function startServer() {
         animations: data.animation_settings,
         theme: data.theme_settings,
         music: data.music_settings,
+        tictactoe: data.tictactoe_settings,
       },
       message: 'Database reset to initial template',
     });

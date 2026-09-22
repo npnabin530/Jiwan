@@ -8,6 +8,7 @@ import { BalloonGameScene } from './components/BalloonGameScene';
 import { PaintWipeScene } from './components/PaintWipeScene';
 import { CelebrationSurpriseScene } from './components/CelebrationSurpriseScene';
 import { MemoryBookScene } from './components/MemoryBookScene';
+import { TicTacToeGame } from './components/TicTacToeGame';
 import { SoundControl } from './components/SoundControl';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { AdminLoginPage } from './components/admin/AdminLoginPage';
@@ -289,6 +290,7 @@ export default function App() {
                 { id: 'paint-wipe', label: '4. Paint Wipe Reveal 🎨' },
                 { id: 'fireworks-surprise', label: '5. Fireworks & Surprise 🎆' },
                 { id: 'memory-book', label: '6. 3D Memory Book & Albums 📖' },
+                { id: 'tictactoe', label: '7. Birthday Tic-Tac-Toe 🎮' },
               ] as const
             ).map((sc) => (
               <button
@@ -419,6 +421,24 @@ export default function App() {
                   wishes={wishes}
                   onAddWish={handleAddWish}
                   settings={settings}
+                  tictactoeSettings={fullData?.tictactoe || fullData?.tictactoe_settings}
+                />
+              </motion.div>
+            )}
+
+            {currentScene === 'tictactoe' && (
+              <motion.div
+                key="scene-tictactoe"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
+                className="w-full h-full flex flex-col"
+              >
+                <TicTacToeGame
+                  settings={fullData?.tictactoe || fullData?.tictactoe_settings}
+                  onBackToMemories={() => goToScene('memory-book')}
+                  onBackToBirthday={() => goToScene('curtain')}
                 />
               </motion.div>
             )}

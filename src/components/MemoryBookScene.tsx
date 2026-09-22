@@ -25,7 +25,8 @@ import { soundManager } from '../utils/audio';
 import { AlbumCover } from './AlbumCover';
 import { RomanticMemoryCard } from './RomanticMemoryCard';
 import { MemoryViewerModal } from './MemoryViewerModal';
-import { TicTacToeMagicGame } from './TicTacToeMagicGame';
+import { TicTacToeGame } from './TicTacToeGame';
+import { TicTacToeSettings } from '../types';
 
 interface MemoryBookSceneProps {
   onRestart: () => void;
@@ -34,6 +35,7 @@ interface MemoryBookSceneProps {
   wishes: BirthdayWish[];
   onAddWish: (wish: BirthdayWish) => void;
   settings: CelebrationSettings;
+  tictactoeSettings?: TicTacToeSettings;
   onOpenAdmin?: () => void;
 }
 
@@ -57,6 +59,7 @@ export const MemoryBookScene: React.FC<MemoryBookSceneProps> = ({
   wishes,
   onAddWish,
   settings,
+  tictactoeSettings,
   onOpenAdmin,
 }) => {
   const [currentStage, setCurrentStage] = useState<StageType>('memories');
@@ -277,17 +280,20 @@ export const MemoryBookScene: React.FC<MemoryBookSceneProps> = ({
           <span>Scrapbook ({memories.length})</span>
         </button>
 
-        <button
-          onClick={() => setCurrentStage('tictactoe')}
-          className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
-            currentStage === 'tictactoe'
-              ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-md shadow-rose-300/50'
-              : 'bg-white/80 text-neutral-600 hover:bg-rose-50 hover:text-rose-600 border border-rose-200'
-          }`}
-        >
-          <Gamepad2 className="w-3 h-3" />
-          <span>Magic Game</span>
-        </button>
+        {tictactoeSettings?.enabled !== false && (
+          <button
+            id="tab-stage-tictactoe"
+            onClick={() => setCurrentStage('tictactoe')}
+            className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+              currentStage === 'tictactoe'
+                ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-md shadow-rose-300/50'
+                : 'bg-white/80 text-neutral-600 hover:bg-rose-50 hover:text-rose-600 border border-rose-200'
+            }`}
+          >
+            <Gamepad2 className="w-3 h-3" />
+            <span>Tic-Tac-Toe 🎮</span>
+          </button>
+        )}
 
         <button
           onClick={() => setCurrentStage('cake')}
@@ -501,6 +507,21 @@ export const MemoryBookScene: React.FC<MemoryBookSceneProps> = ({
                       </div>
                     )}
 
+                    {/* CTA Button: Play Birthday Tic-Tac-Toe */}
+                    {tictactoeSettings?.enabled !== false && (
+                      <motion.button
+                        id="btn-play-tictactoe-memories"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setCurrentStage('tictactoe')}
+                        className="w-full py-3 rounded-2xl bg-white hover:bg-rose-50 text-rose-700 font-extrabold text-xs sm:text-sm border-2 border-rose-200 shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all mb-2.5"
+                      >
+                        <Gamepad2 className="w-4 h-4 text-rose-500" />
+                        <span>🎮 Play Birthday Tic-Tac-Toe vs Robot</span>
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                      </motion.button>
+                    )}
+
                     {/* CTA Button: Open Your Birthday Message */}
                     <motion.button
                       id="btn-open-birthday-message-final"
@@ -520,12 +541,13 @@ export const MemoryBookScene: React.FC<MemoryBookSceneProps> = ({
           </div>
         )}
 
-        {/* ================= STAGE 2: MAGIC TIC-TAC-TOE GAME ================= */}
+        {/* ================= STAGE 2: TIC-TAC-TOE VS ROBOT MINI-GAME ================= */}
         {currentStage === 'tictactoe' && (
           <div className="w-full flex flex-col items-center">
-            <TicTacToeMagicGame
-              personName={settings.personName}
-              onWin={() => setCurrentStage('cake')}
+            <TicTacToeGame
+              settings={tictactoeSettings}
+              onBackToMemories={() => setCurrentStage('memories')}
+              onBackToBirthday={onRestart}
             />
           </div>
         )}
